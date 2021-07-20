@@ -8,17 +8,21 @@ import org.apache.zookeeper.data.Stat;
 
 /**
  * @Auther: ShouZhi@Duan
- * @Description:
+ * @Description: 增删改查操作
  */
-public class CuratorClientTest {
+public class CRUDClientTest {
 
     private static String CONNECTION_STR="192.168.10.33:2185";
 
     public static void main(String[] args) throws Exception {
         //CuratorFramework curatorFramework= CuratorFrameworkFactory.newClient("")
-        CuratorFramework curatorFramework = CuratorFrameworkFactory.builder().
-                connectString(CONNECTION_STR).sessionTimeoutMs(5000).
-                retryPolicy(new ExponentialBackoffRetry(1000,3)).build();
+        CuratorFramework curatorFramework =
+                CuratorFrameworkFactory
+                        .builder()
+                        .connectString(CONNECTION_STR)
+                        .sessionTimeoutMs(5000).retryPolicy(new ExponentialBackoffRetry(1000,3))
+                        .namespace("curator1") //工作空间，不同的空间可以存在相同的数据名称
+                        .build();
         //ExponentialBackoffRetry
         //RetryOneTime  仅仅只重试一次
         //RetryUntilElapsed
