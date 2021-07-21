@@ -5,6 +5,7 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
+import org.junit.Test;
 
 /**
  * @Auther: ShouZhi@Duan
@@ -14,10 +15,11 @@ public class CRUDClientTest {
 
     private static String CONNECTION_STR="192.168.10.33:2185";
 
-    public static void main(String[] args) throws Exception {
+    private static CuratorFramework curatorFramework;
+
+    static {
         //CuratorFramework curatorFramework= CuratorFrameworkFactory.newClient("")
-        CuratorFramework curatorFramework =
-                CuratorFrameworkFactory
+         curatorFramework = CuratorFrameworkFactory
                         .builder()
                         .connectString(CONNECTION_STR)
                         .sessionTimeoutMs(5000).retryPolicy(new ExponentialBackoffRetry(1000,3))
@@ -28,7 +30,7 @@ public class CRUDClientTest {
         //RetryUntilElapsed
         //RetryNTimes
         curatorFramework.start(); //启动
-        createData(curatorFramework);
+//        createData(curatorFramework);
 //        updateData(curatorFramework);
 //        deleteData(curatorFramework);
         //CRUD
@@ -36,6 +38,10 @@ public class CRUDClientTest {
 //        curatorFramework.setData(); //修改
 //        curatorFramework.delete() ;// 删除
 //        curatorFramework.getData(); //查询
+    }
+
+    public static void main(String[] args) throws Exception {
+
     }
 
     private static void createData(CuratorFramework curatorFramework) throws Exception {
@@ -55,4 +61,32 @@ public class CRUDClientTest {
         //乐观锁执行删除
         curatorFramework.delete().withVersion(stat.getVersion()).forPath("/data/program");
     }
+
+    /**
+     * 增
+     */
+    @Test
+    public void insert() throws Exception {
+        //单级目录创建
+        curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/2","666666".getBytes());
+        //多级目录创建
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/1/2","666666".getBytes());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -10,6 +10,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
+import org.junit.Test;
 
 
 /**
@@ -22,31 +23,25 @@ public class WatcherClientTest {
 
     private final static String NAME_SPACE = "watch-curator";
 
-    /**
-     * 1、NodeCache       针对当前节点的创建、删除和更新触发事件
-     * 2、PathChildCache  针对于子节点的创建、删除和更新触发事件
-     * 3、TreeCache       综合事件(PathChildCache+NodeCache)
-     */
-    public static void main(String[] args) throws Exception {
-       CuratorFramework curatorFramework = CuratorFrameworkFactory.builder().
+    private static CuratorFramework curatorFramework;
+
+    static {
+         curatorFramework = CuratorFrameworkFactory.builder().
                 connectString(CONNECT_STR)
                 .sessionTimeoutMs(5000)
                 .retryPolicy(new ExponentialBackoffRetry(1000,3))
                 .namespace(NAME_SPACE)
                 .build();
         curatorFramework.start();
-        //addListenerWithChild(curatorFramework);
-        //nodeCacheWatcher(curatorFramework);
-        //onceWatch(curatorFramework);
-        reWatch();
-        System.in.read();
     }
+
 
     /**
      * 原生watch事件监听方式
      * 一次性监听
      */
-    public static void onceWatch(CuratorFramework curatorFramework) throws Exception {
+    @Test
+    public void onceWatch() throws Exception {
         String nodeName = "/dsz";
         Stat stat = curatorFramework.checkExists().forPath(nodeName);
         if(null == stat){
@@ -60,13 +55,15 @@ public class WatcherClientTest {
         };
         byte[] bytes = curatorFramework.getData().usingWatcher(watcher).forPath(nodeName);
         System.out.println(new String(bytes));
+        System.in.read();
     }
 
     /**
      * 原生watch事件监听方式
      * 循环监听
      */
-    public static void reWatch() throws Exception {
+    @Test
+    public void reWatch() throws Exception {
         MyWatcher watcher = new MyWatcher();
         ZooKeeper zk = new ZooKeeper("192.168.10.33:2185", 5000, watcher);
         watcher.setZk(zk);
@@ -91,47 +88,47 @@ public class WatcherClientTest {
 //        zk.close();
     }
 
+    //=======================================================
+    //1、NodeCache       针对当前节点的创建、删除和更新触发事件
+    //2、PathChildCache  针对于子节点的创建、删除和更新触发事件
+    //3、TreeCache       综合事件(PathChildCache+NodeCache)
+    //=======================================================
 
     /**
      * NodeCache
+     * 当前节点监听
      */
-    public static void nodeCacheWatcher(CuratorFramework curatorFramework) throws Exception {
-        NodeCache nodeCache = new NodeCache(curatorFramework,"/watch",false);
+    @Test
+    public void nodeCache() throws Exception {
+        NodeCache nodeCache = new NodeCache(curatorFramework,"/watch-1",false);
         NodeCacheListener nodeCacheListener = () -> {
             System.out.println("======收到节点变更信息======");
             System.out.println(nodeCache.getCurrentData().getPath());
             //System.out.println(nodeCache.getCurrentData().getPath()+"<===>"+new String(nodeCache.getCurrentData().getData()));
         };
         nodeCache.getListenable().addListener(nodeCacheListener);
-        nodeCache.start();
+        nodeCache.start(true);//初始化的时候获取node的值并且缓存
+        System.in.read();
     }
 
 
-
-
-
-
-
-    //配置中心
-    //创建、修改、删除
-    private static void addListenerWithNode(CuratorFramework curatorFramework) throws Exception {
-        NodeCache nodeCache = new NodeCache(curatorFramework,"/watch",false);
-        NodeCacheListener nodeCacheListener = () -> {
-            System.out.println("receive Node Changed");
-            System.out.println(nodeCache.getCurrentData().getPath()+"---"+new String(nodeCache.getCurrentData().getData()));
-        };
-        nodeCache.getListenable().addListener(nodeCacheListener);
-        nodeCache.start();
-    }
-
-    //实现服务注册中心的时候，可以针对服务做动态感知
-    private static void addListenerWithChild(CuratorFramework curatorFramework) throws Exception {
+    /**
+     * PathChildCache
+     * 子节点监听
+     */
+    @Test
+    public void pathChildCache() throws Exception {
         PathChildrenCache nodeCache=new PathChildrenCache(curatorFramework,"/watch",true);
-        PathChildrenCacheListener nodeCacheListener= (curatorFramework1,pathChildrenCacheEvent) -> {
+        PathChildrenCacheListener nodeCacheListener = (curatorFramework1,pathChildrenCacheEvent) -> {
+            //CONNECTION_RECONNECTED
+            //CHILD_REMOVED
+            //CHILD_UPDATED
+            //CHILD_ADDED
             System.out.println(pathChildrenCacheEvent.getType()+"->"+new String(pathChildrenCacheEvent.getData().getData()));
         };
         nodeCache.getListenable().addListener(nodeCacheListener);
         nodeCache.start(PathChildrenCache.StartMode.NORMAL);
+        System.in.read();
     }
 
 }
