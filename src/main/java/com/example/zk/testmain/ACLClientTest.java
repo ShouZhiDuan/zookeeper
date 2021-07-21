@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * @Auther: ShouZhi@Duan
- * @Description: 权限操作
+ * @Description: ACL权限操作
  */
 public class ACLClientTest {
     private final static String CONNECT_STR = "192.168.10.33:2185";
