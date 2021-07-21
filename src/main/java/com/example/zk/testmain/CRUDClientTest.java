@@ -21,7 +21,7 @@ public class CRUDClientTest {
                         .builder()
                         .connectString(CONNECTION_STR)
                         .sessionTimeoutMs(5000).retryPolicy(new ExponentialBackoffRetry(1000,3))
-                        .namespace("curator1") //工作空间，不同的空间可以存在相同的数据名称
+                        .namespace("myname_space") //工作空间，不同的空间可以存在相同的数据名称
                         .build();
         //ExponentialBackoffRetry
         //RetryOneTime  仅仅只重试一次
