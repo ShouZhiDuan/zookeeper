@@ -69,14 +69,18 @@ public class CRUDClientTest {
     @Test
     public void insert() throws Exception {
         //单级目录创建
-        curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/2","666666".getBytes());
+        //curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/2","666666".getBytes());
         //多级目录创建
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/1/2","666666".getBytes());
+        //curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/1/2","666666".getBytes());
         //创建临时节点，临时节点只会对最后节点进行移除，父节点不会移除
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-1/2-2","2-1".getBytes());
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-2","2-2".getBytes());
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-3","2-3".getBytes());
-        System.in.read();
+//        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-1/2-2","2-1".getBytes());
+//        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-2","2-2".getBytes());
+//        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-3","2-3".getBytes());
+        //创建持久有序节点
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/1","1".getBytes());
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/2","2".getBytes());
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/3","3".getBytes());
+        //System.in.read();
     }
 
 
