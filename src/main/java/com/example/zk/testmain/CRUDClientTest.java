@@ -23,7 +23,7 @@ public class CRUDClientTest {
                         .builder()
                         .connectString(CONNECTION_STR)
                         .sessionTimeoutMs(5000).retryPolicy(new ExponentialBackoffRetry(1000,3))
-                        .namespace("myname_space") //工作空间，不同的空间可以存在相同的数据名称
+                        //.namespace("myname_space") //工作空间，不同的空间可以存在相同的数据名称
                         .build();
         //ExponentialBackoffRetry
         //RetryOneTime  仅仅只重试一次
@@ -71,6 +71,11 @@ public class CRUDClientTest {
         curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/2","666666".getBytes());
         //多级目录创建
         curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/1/2","666666".getBytes());
+        //创建临时节点，临时节点只会对最后节点进行移除，父节点不会移除
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-1/2-2","2-1".getBytes());
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-2","2-2".getBytes());
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-3","2-3".getBytes());
+        System.in.read();
     }
 
 
