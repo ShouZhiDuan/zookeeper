@@ -1,4 +1,4 @@
-package com.example.zk.testmain;
+package com.example.zk.crud_watcher;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
