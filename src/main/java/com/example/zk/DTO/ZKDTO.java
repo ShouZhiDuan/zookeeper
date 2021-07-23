@@ -1,8 +1,6 @@
 package com.example.zk.DTO;
 
-import lombok.Data;
 import lombok.ToString;
-
 import java.io.Serializable;
 
 /**
