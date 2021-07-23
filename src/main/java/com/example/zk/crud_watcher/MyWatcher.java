@@ -14,13 +14,16 @@ import org.apache.zookeeper.data.Stat;
  */
 public class MyWatcher implements Watcher {
 
-    private ZooKeeper zk=null;
+    private ZooKeeper zk = null;
+
     public MyWatcher() {
         // TODO Auto-generated constructor stub
     }
+
     public MyWatcher(ZooKeeper zk) {
-        this.zk=zk;
+        this.zk = zk;
     }
+
     public void setZk(ZooKeeper zk) {
         this.zk = zk;
     }
@@ -28,13 +31,13 @@ public class MyWatcher implements Watcher {
     @Override
     public void process(WatchedEvent event) {
         String path = event.getPath();
-        if(path.equals(null)){
+        if (path.equals(null)) {
             System.out.println("======连接成功======");
             return;
         }
         Event.KeeperState state = event.getState();
         Event.EventType type = event.getType();
-        System.out.println("监听中"+path+"\t"+state+"\t"+type);
+        System.out.println("监听中" + path + "\t" + state + "\t" + type);
         try {
             Stat stat = zk.exists(path, true);
             zk.getData(path, true, stat);

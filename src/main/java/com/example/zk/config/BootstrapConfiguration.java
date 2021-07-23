@@ -8,5 +8,6 @@ import org.springframework.context.annotation.Configuration;
  * @Description:
  */
 @Configuration
-@ComponentScan(basePackages={"com.example.zk"})
-public class BootstrapConfiguration {}
+@ComponentScan(basePackages = {"com.example.zk"})
+public class BootstrapConfiguration {
+}

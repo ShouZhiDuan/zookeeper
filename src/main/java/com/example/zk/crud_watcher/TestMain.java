@@ -26,17 +26,14 @@ public class TestMain {
     }
 
     @Test
-    public static void test(){
+    public static void test() {
         String s1 = "{\"Hi\":\"\\\\s\"}";
         int i = (int) '/';
         //System.out.println(s1);
-        try
-        {
+        try {
             JSONObject json = new JSONObject(s1);
             System.out.println("data = " + json);
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

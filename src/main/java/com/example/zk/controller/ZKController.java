@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ZKController {
 
     @GetMapping("/test")
-    public Object testParams(@RequestParam("name") String name){
+    public Object testParams(@RequestParam("name") String name) {
         System.out.println(name);
         return name;
     }

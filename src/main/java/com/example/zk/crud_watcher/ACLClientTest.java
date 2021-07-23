@@ -11,6 +11,7 @@ import org.apache.zookeeper.data.Id;
 import org.apache.zookeeper.data.Stat;
 import org.apache.zookeeper.server.auth.DigestAuthenticationProvider;
 import org.junit.Test;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +30,13 @@ public class ACLClientTest {
 
     static {
         System.out.println("======初始化zookeeper连接======");
-        AuthInfo authInfo = new AuthInfo("digest",PWD_2.getBytes());
-        List<AuthInfo> authInfos=new ArrayList<>();
+        AuthInfo authInfo = new AuthInfo("digest", PWD_2.getBytes());
+        List<AuthInfo> authInfos = new ArrayList<>();
         authInfos.add(authInfo);
         curatorFramework = CuratorFrameworkFactory.builder().
                 connectString(CONNECT_STR)
                 .sessionTimeoutMs(5000)
-                .retryPolicy(new ExponentialBackoffRetry(1000,3))
+                .retryPolicy(new ExponentialBackoffRetry(1000, 3))
                 .authorization(authInfos) //授权
                 .namespace(NAME_SPACE)
                 .build();
@@ -66,8 +67,8 @@ public class ACLClientTest {
         curatorFramework.create()
                 .creatingParentsIfNeeded() //存在就不创建
                 .withMode(CreateMode.PERSISTENT)//数据模式
-                .withACL(acls,true) //设置权限
-                .forPath("/test-6","测试目录权限".getBytes());
+                .withACL(acls, true) //设置权限
+                .forPath("/test-6", "测试目录权限".getBytes());
         curatorFramework.close();
     }
 
@@ -95,9 +96,6 @@ public class ACLClientTest {
         System.out.println(stat);
         curatorFramework.close();
     }
-
-
-
 
 
 }

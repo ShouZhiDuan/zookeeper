@@ -13,18 +13,18 @@ import org.junit.Test;
  */
 public class CRUDClientTest {
 
-    private static String CONNECTION_STR="192.168.10.33:2185";
+    private static String CONNECTION_STR = "192.168.10.33:2185";
 
     private static CuratorFramework curatorFramework;
 
     static {
         //CuratorFramework curatorFramework= CuratorFrameworkFactory.newClient("")
-         curatorFramework = CuratorFrameworkFactory
-                        .builder()
-                        .connectString(CONNECTION_STR)
-                        .sessionTimeoutMs(5000).retryPolicy(new ExponentialBackoffRetry(1000,3))
-                        //.namespace("myname_space") //工作空间，不同的空间可以存在相同的数据名称
-                        .build();
+        curatorFramework = CuratorFrameworkFactory
+                .builder()
+                .connectString(CONNECTION_STR)
+                .sessionTimeoutMs(5000).retryPolicy(new ExponentialBackoffRetry(1000, 3))
+                //.namespace("myname_space") //工作空间，不同的空间可以存在相同的数据名称
+                .build();
         //ExponentialBackoffRetry
         //RetryOneTime  仅仅只重试一次
         //RetryUntilElapsed
@@ -46,12 +46,12 @@ public class CRUDClientTest {
     }
 
     private static void createData(CuratorFramework curatorFramework) throws Exception {
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/data/program","test".getBytes());
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/data/program", "test".getBytes());
 
     }
 
     private static void updateData(CuratorFramework curatorFramework) throws Exception {
-        curatorFramework.setData().forPath("/data/program","up".getBytes());
+        curatorFramework.setData().forPath("/data/program", "up".getBytes());
 
     }
 
@@ -77,26 +77,11 @@ public class CRUDClientTest {
 //        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-2","2-2".getBytes());
 //        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-3","2-3".getBytes());
         //创建持久有序节点
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/1","1".getBytes());
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/2","2".getBytes());
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/3","3".getBytes());
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/1", "1".getBytes());
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/2", "2".getBytes());
+        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/3", "3".getBytes());
         //System.in.read();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

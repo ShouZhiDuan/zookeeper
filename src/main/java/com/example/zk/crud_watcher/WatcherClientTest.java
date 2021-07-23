@@ -19,18 +19,18 @@ import org.junit.Test;
  */
 public class WatcherClientTest {
 
-    private static String CONNECT_STR="192.168.10.33:2185";
+    private static String CONNECT_STR = "192.168.10.33:2185";
 
     private final static String NAME_SPACE = "myRegistry";
 
     private static CuratorFramework curatorFramework;
 
     static {
-         curatorFramework = CuratorFrameworkFactory.builder().
+        curatorFramework = CuratorFrameworkFactory.builder().
                 connectString(CONNECT_STR)
                 .sessionTimeoutMs(5000)
-                 //初次间隔1秒，重试3次。
-                .retryPolicy(new ExponentialBackoffRetry(1000,3))
+                //初次间隔1秒，重试3次。
+                .retryPolicy(new ExponentialBackoffRetry(1000, 3))
                 .namespace(NAME_SPACE)
                 .build();
         curatorFramework.start();
@@ -45,8 +45,8 @@ public class WatcherClientTest {
     public void onceWatch() throws Exception {
         String nodeName = "/dsz";
         Stat stat = curatorFramework.checkExists().forPath(nodeName);
-        if(null == stat){
-          curatorFramework.create().creatingParentsIfNeeded().forPath(nodeName,"666666".getBytes());
+        if (null == stat) {
+            curatorFramework.create().creatingParentsIfNeeded().forPath(nodeName, "666666".getBytes());
         }
         System.out.println("stat = " + stat);
         Watcher watcher = (watchedEvent) -> {
@@ -73,7 +73,7 @@ public class WatcherClientTest {
          * 监听当前节点
          */
         Stat stat = zk.exists(path, true);
-        zk.getData(path,true,stat);
+        zk.getData(path, true, stat);
 
         /**
          * 监听子节点
@@ -103,7 +103,7 @@ public class WatcherClientTest {
      */
     @Test
     public void nodeCache() throws Exception {
-        NodeCache nodeCache = new NodeCache(curatorFramework,"/watch-1",false);
+        NodeCache nodeCache = new NodeCache(curatorFramework, "/watch-1", false);
         NodeCacheListener nodeCacheListener = () -> {
             System.out.println("======收到节点变更信息======");
             System.out.println(nodeCache.getCurrentData().getPath());
@@ -124,11 +124,11 @@ public class WatcherClientTest {
     @Test
     public void pathChildCache() throws Exception {
         //false不缓存目录的值。 true缓存目录的值。
-        PathChildrenCache nodeCache=new PathChildrenCache(curatorFramework,"/watch",true);
-        PathChildrenCacheListener nodeCacheListener = (curatorFramework1,pathChildrenCacheEvent) -> {
-        //System.out.println("子节点事件类型：" + pathChildrenCacheEvent.getType());
-        //System.out.println("子节点的值：" + new String(pathChildrenCacheEvent.getData().getData()));
-        switch (pathChildrenCacheEvent.getType()) {
+        PathChildrenCache nodeCache = new PathChildrenCache(curatorFramework, "/watch", true);
+        PathChildrenCacheListener nodeCacheListener = (curatorFramework1, pathChildrenCacheEvent) -> {
+            //System.out.println("子节点事件类型：" + pathChildrenCacheEvent.getType());
+            //System.out.println("子节点的值：" + new String(pathChildrenCacheEvent.getData().getData()));
+            switch (pathChildrenCacheEvent.getType()) {
                 case CHILD_ADDED:
                     System.out.println("添加目录 :" + pathChildrenCacheEvent.getData().getPath());
                     System.out.println("添加数据 : " + new String(pathChildrenCacheEvent.getData().getData()));
