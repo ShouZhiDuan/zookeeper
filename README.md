@@ -11,3 +11,8 @@
 
 ## 分布式锁实现
 * com.example.zk.distribution_lock.ZookeeperLockDemo
+
+## Leader选举
+* com.example.zk.select_leader.LeaderSelectorClient
+* com.example.zk.select_leader.LeaderSelectorClientB
+* com.example.zk.select_leader.LeaderSelectorClientC
