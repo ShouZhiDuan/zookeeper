@@ -13,7 +13,7 @@ import org.junit.Test;
  */
 public class CRUDClientTest {
 
-    private static String CONNECTION_STR = "192.168.10.33:2181,192.168.10.34:2181";
+    private static String CONNECTION_STR = "192.168.10.33:2185";
 
     private static CuratorFramework curatorFramework;
 
@@ -25,6 +25,7 @@ public class CRUDClientTest {
                 .sessionTimeoutMs(5000).retryPolicy(new ExponentialBackoffRetry(1000, 3))
                 .namespace("my_space") //工作空间，不同的空间可以存在相同的数据名称
                 .build();
+        curatorFramework.sync();//数据强一致保证
         //ExponentialBackoffRetry
         //RetryOneTime  仅仅只重试一次
         //RetryUntilElapsed
