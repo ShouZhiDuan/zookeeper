@@ -13,7 +13,7 @@ import org.junit.Test;
  */
 public class CRUDClientTest {
 
-    private static String CONNECTION_STR = "192.168.10.33:2185";
+    private static String CONNECTION_STR = "192.168.10.33:2181,192.168.10.34:2181";
 
     private static CuratorFramework curatorFramework;
 
@@ -23,7 +23,7 @@ public class CRUDClientTest {
                 .builder()
                 .connectString(CONNECTION_STR)
                 .sessionTimeoutMs(5000).retryPolicy(new ExponentialBackoffRetry(1000, 3))
-                //.namespace("myname_space") //工作空间，不同的空间可以存在相同的数据名称
+                .namespace("my_space") //工作空间，不同的空间可以存在相同的数据名称
                 .build();
         //ExponentialBackoffRetry
         //RetryOneTime  仅仅只重试一次
@@ -69,7 +69,7 @@ public class CRUDClientTest {
     @Test
     public void insert() throws Exception {
         //单级目录创建
-        //curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/2","666666".getBytes());
+        curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/2","666666".getBytes());
         //多级目录创建
         //curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/1/2","666666".getBytes());
         //创建临时节点，临时节点只会对最后节点进行移除，父节点不会移除
@@ -77,9 +77,9 @@ public class CRUDClientTest {
 //        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-2","2-2".getBytes());
 //        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/2/2-3","2-3".getBytes());
         //创建持久有序节点
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/1", "1".getBytes());
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/2", "2".getBytes());
-        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/3", "3".getBytes());
+//        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/1", "1".getBytes());
+//        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/2", "2".getBytes());
+//        curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/1/3", "3".getBytes());
         //System.in.read();
     }
 
