@@ -26,6 +26,7 @@ public class ZKClientTest implements Watcher {
     public void process(WatchedEvent event) {
         System.out.println("======事件类型======" + event.getType());
         try {
+            //循环监听
             zk.exists(event.getPath(),true);
         } catch (KeeperException e) {
             e.printStackTrace();
@@ -46,6 +47,7 @@ public class ZKClientTest implements Watcher {
         if(exists == null){
             zk.create(path,"value".getBytes(),ZooDefs.Ids.OPEN_ACL_UNSAFE,CreateMode.PERSISTENT);
         }else {
+            //首次监听
             zk.exists(path, true);
         }
         System.in.read();
