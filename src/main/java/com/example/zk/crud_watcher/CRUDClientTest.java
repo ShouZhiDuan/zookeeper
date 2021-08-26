@@ -70,7 +70,7 @@ public class CRUDClientTest {
     @Test
     public void insert() throws Exception {
         //单级目录创建
-        curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/2","666666".getBytes());
+        curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/3","666666".getBytes());
         //多级目录创建
         //curatorFramework.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/1/2","666666".getBytes());
         //创建临时节点，临时节点只会对最后节点进行移除，父节点不会移除
