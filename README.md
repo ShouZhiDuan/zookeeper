@@ -16,3 +16,6 @@
 * com.example.zk.select_leader.LeaderSelectorClient
 * com.example.zk.select_leader.LeaderSelectorClientB
 * com.example.zk.select_leader.LeaderSelectorClientC
+
+## zkClient实现循环事件监听
+* com.example.zk.crud_watcher.ZKClientTest
